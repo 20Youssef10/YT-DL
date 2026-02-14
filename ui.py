@@ -83,7 +83,7 @@ class SearchResultCard(ft.Card):
         # Short badge
         badges = []
         if video_data.get('is_short'):
-            badges.append(ft.Chip(label=ft.Text("SHORT"), bgcolor=ft.colors.PINK))
+            badges.append(ft.Chip(label=ft.Text("SHORT"), bgcolor=ft.Colors.PINK))
         
         # Content layout
         content = ft.Container(
@@ -109,7 +109,7 @@ class SearchResultCard(ft.Card):
                                 ft.Text(
                                     video_data.get('channel', ''),
                                     size=12,
-                                    color=ft.colors.GREY_400
+                                    color=ft.Colors.GREY_400
                                 ),
                                 ft.Row(
                                     [
@@ -183,13 +183,13 @@ class QueueItemCard(ft.Card):
         
         # Status colors
         self.status_colors = {
-            DownloadStatus.WAITING: ft.colors.GREY,
-            DownloadStatus.PROCESSING: ft.colors.BLUE,
-            DownloadStatus.DOWNLOADING: ft.colors.BLUE,
-            DownloadStatus.CONVERTING: ft.colors.ORANGE,
-            DownloadStatus.DONE: ft.colors.GREEN,
-            DownloadStatus.ERROR: ft.colors.RED,
-            DownloadStatus.CANCELLED: ft.colors.GREY
+            DownloadStatus.WAITING: ft.Colors.GREY,
+            DownloadStatus.PROCESSING: ft.Colors.BLUE,
+            DownloadStatus.DOWNLOADING: ft.Colors.BLUE,
+            DownloadStatus.CONVERTING: ft.Colors.ORANGE,
+            DownloadStatus.DONE: ft.Colors.GREEN,
+            DownloadStatus.ERROR: ft.Colors.RED,
+            DownloadStatus.CANCELLED: ft.Colors.GREY
         }
         
         # Build card
@@ -197,7 +197,7 @@ class QueueItemCard(ft.Card):
     
     def update_content(self):
         """Update card content based on item status"""
-        status_color = self.status_colors.get(self.item.status, ft.colors.GREY)
+        status_color = self.status_colors.get(self.item.status, ft.Colors.GREY)
         
         # Progress bar
         progress_bar = ft.ProgressBar(
@@ -224,7 +224,7 @@ class QueueItemCard(ft.Card):
         info_text = ft.Text(
             f"{self.item.speed} {self.item.eta}",
             size=11,
-            color=ft.colors.GREY_400
+            color=ft.Colors.GREY_400
         )
         
         # Action buttons
@@ -236,7 +236,7 @@ class QueueItemCard(ft.Card):
                     icon=ft.icons.CANCEL,
                     tooltip="Cancel",
                     on_click=self.on_cancel_click,
-                    icon_color=ft.colors.RED
+                    icon_color=ft.Colors.RED
                 )
             )
         elif self.item.status == DownloadStatus.ERROR:
@@ -245,7 +245,7 @@ class QueueItemCard(ft.Card):
                     icon=ft.icons.REPLAY,
                     tooltip="Retry",
                     on_click=self.on_retry_click,
-                    icon_color=ft.colors.BLUE
+                    icon_color=ft.Colors.BLUE
                 )
             )
             if self.item.error_message:
@@ -253,7 +253,7 @@ class QueueItemCard(ft.Card):
                     ft.IconButton(
                         icon=ft.icons.ERROR,
                         tooltip=self.item.error_message,
-                        icon_color=ft.colors.RED
+                        icon_color=ft.Colors.RED
                     )
                 )
         elif self.item.status == DownloadStatus.DONE:
@@ -261,7 +261,7 @@ class QueueItemCard(ft.Card):
                 ft.IconButton(
                     icon=ft.icons.CHECK_CIRCLE,
                     tooltip="Completed",
-                    icon_color=ft.colors.GREEN,
+                    icon_color=ft.Colors.GREEN,
                     disabled=True
                 )
             )
@@ -303,14 +303,14 @@ class QueueItemCard(ft.Card):
                                 ft.Text(
                                     self.item.channel,
                                     size=11,
-                                    color=ft.colors.GREY_400
+                                    color=ft.Colors.GREY_400
                                 ),
                                 ft.Row(
                                     [
                                         ft.Text(
                                             AUDIO_QUALITIES.get(self.item.quality, {}).get('label', self.item.quality),
                                             size=10,
-                                            color=ft.colors.GREY_500
+                                            color=ft.Colors.GREY_500
                                         )
                                     ]
                                 )
@@ -378,7 +378,7 @@ class HistoryItemCard(ft.Card):
                     ft.Icon(
                         ft.icons.AUDIO_FILE,
                         size=40,
-                        color=ft.colors.GREEN
+                        color=ft.Colors.GREEN
                     ),
                     
                     # Info
@@ -394,20 +394,20 @@ class HistoryItemCard(ft.Card):
                                 ft.Text(
                                     item.get('channel', ''),
                                     size=11,
-                                    color=ft.colors.GREY_400
+                                    color=ft.Colors.GREY_400
                                 ),
                                 ft.Row(
                                     [
                                         ft.Text(
                                             item.get('file_size', ''),
                                             size=10,
-                                            color=ft.colors.GREY_500
+                                            color=ft.Colors.GREY_500
                                         ),
                                         ft.Text("•", size=10),
                                         ft.Text(
                                             item.get('quality', ''),
                                             size=10,
-                                            color=ft.colors.GREY_500
+                                            color=ft.Colors.GREY_500
                                         )
                                     ]
                                 )

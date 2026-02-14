@@ -86,7 +86,7 @@ class YouTubeMusicDownloader:
         self.page.appbar = ft.AppBar(
             title=ft.Text("YouTube Music Downloader", size=20, weight=ft.FontWeight.BOLD),
             center_title=False,
-            bgcolor=ft.colors.SURFACE_VARIANT,
+            bgcolor=ft.Colors.SURFACE_VARIANT,
             actions=[
                 ft.IconButton(
                     icon=ft.icons.SETTINGS,
@@ -105,13 +105,13 @@ class YouTubeMusicDownloader:
         self.global_progress_bar = ft.ProgressBar(
             value=0,
             width=400,
-            color=ft.colors.GREEN
+            color=ft.Colors.GREEN
         )
         
         self.global_status_text = ft.Text(
             "Ready",
             size=12,
-            color=ft.colors.GREY_400
+            color=ft.Colors.GREY_400
         )
         
         # Search Tab
@@ -158,7 +158,7 @@ class YouTubeMusicDownloader:
         progress_row = ft.Container(
             content=ft.Row(
                 [
-                    ft.Icon(ft.icons.DOWNLOAD, color=ft.colors.GREEN),
+                    ft.Icon(ft.icons.DOWNLOAD, color=ft.Colors.GREEN),
                     self.global_progress_bar,
                     self.global_status_text
                 ],
@@ -166,7 +166,7 @@ class YouTubeMusicDownloader:
                 spacing=12
             ),
             padding=ft.padding.all(8),
-            bgcolor=ft.colors.SURFACE_VARIANT
+            bgcolor=ft.Colors.SURFACE_VARIANT
         )
         
         # Main Layout
@@ -279,16 +279,16 @@ class YouTubeMusicDownloader:
             ft.Container(
                 content=ft.Column(
                     [
-                        ft.Icon(ft.icons.SEARCH, size=64, color=ft.colors.GREY_700),
+                        ft.Icon(ft.icons.SEARCH, size=64, color=ft.Colors.GREY_700),
                         ft.Text(
                             "Search for your favorite music",
                             size=18,
-                            color=ft.colors.GREY_500
+                            color=ft.Colors.GREY_500
                         ),
                         ft.Text(
                             "Enter a song name, artist, or paste a YouTube URL",
                             size=14,
-                            color=ft.colors.GREY_600
+                            color=ft.Colors.GREY_600
                         )
                     ],
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -515,7 +515,7 @@ class YouTubeMusicDownloader:
                 content=ft.ElevatedButton(
                     "Reset All Settings",
                     icon=ft.icons.RESTORE,
-                    color=ft.colors.RED,
+                    color=ft.Colors.RED,
                     on_click=self.on_reset_settings
                 ),
                 padding=ft.padding.all(16),
@@ -538,7 +538,7 @@ class YouTubeMusicDownloader:
         # Check internet
         has_internet = await check_internet_connection()
         if not has_internet:
-            self.show_snackbar("No internet connection detected", ft.colors.RED)
+            self.show_snackbar("No internet connection detected", ft.Colors.RED)
         
         # Initialize searcher
         self.searcher = YouTubeSearcher()
@@ -628,7 +628,7 @@ class YouTubeMusicDownloader:
                 self.display_search_results(results)
                 
         except Exception as e:
-            self.show_snackbar(f"Search error: {str(e)}", ft.colors.RED)
+            self.show_snackbar(f"Search error: {str(e)}", ft.Colors.RED)
             self.results_list.controls = []
         
         finally:
@@ -642,7 +642,7 @@ class YouTubeMusicDownloader:
         if not results:
             self.results_list.controls.append(
                 ft.Container(
-                    content=ft.Text("No results found", color=ft.colors.GREY_500),
+                    content=ft.Text("No results found", color=ft.Colors.GREY_500),
                     alignment=ft.alignment.center,
                     expand=True
                 )
@@ -662,16 +662,16 @@ class YouTubeMusicDownloader:
         """Add video by URL"""
         video_id = get_video_id(url)
         if not video_id:
-            self.show_snackbar("Invalid YouTube URL", ft.colors.RED)
+            self.show_snackbar("Invalid YouTube URL", ft.Colors.RED)
             return
         
         async with self.searcher:
             video_info = await self.searcher.get_video_info(video_id)
             if video_info:
                 self.on_add_to_queue(video_info, settings.default_quality)
-                self.show_snackbar(f"Added: {video_info['title']}", ft.colors.GREEN)
+                self.show_snackbar(f"Added: {video_info['title']}", ft.Colors.GREEN)
             else:
-                self.show_snackbar("Could not fetch video info", ft.colors.RED)
+                self.show_snackbar("Could not fetch video info", ft.Colors.RED)
     
     def on_add_to_queue(self, video_data: dict, quality: str):
         """Add video to download queue"""
@@ -686,7 +686,7 @@ class YouTubeMusicDownloader:
         )
         
         queue_manager.add_item(item)
-        self.show_snackbar(f"Added to queue: {video_data.get('title', '')}", ft.colors.GREEN)
+        self.show_snackbar(f"Added to queue: {video_data.get('title', '')}", ft.Colors.GREEN)
         
         # Switch to queue tab
         self.tabs.selected_index = 1
@@ -708,17 +708,17 @@ class YouTubeMusicDownloader:
         """Add playlist to queue"""
         playlist_id = extract_playlist_id(url)
         if not playlist_id:
-            self.show_snackbar("Invalid playlist URL", ft.colors.RED)
+            self.show_snackbar("Invalid playlist URL", ft.Colors.RED)
             return
         
-        self.show_snackbar("Fetching playlist...", ft.colors.BLUE)
+        self.show_snackbar("Fetching playlist...", ft.Colors.BLUE)
         
         try:
             async with self.searcher:
                 videos = await self.searcher.get_playlist_videos(playlist_id)
                 
                 if not videos:
-                    self.show_snackbar("No videos found in playlist", ft.colors.RED)
+                    self.show_snackbar("No videos found in playlist", ft.Colors.RED)
                     return
                 
                 items = []
@@ -735,14 +735,14 @@ class YouTubeMusicDownloader:
                     items.append(item)
                 
                 queue_manager.add_items(items)
-                self.show_snackbar(f"Added {len(items)} videos from playlist", ft.colors.GREEN)
+                self.show_snackbar(f"Added {len(items)} videos from playlist", ft.Colors.GREEN)
                 
                 # Switch to queue tab
                 self.tabs.selected_index = 1
                 self.page.update()
                 
         except Exception as e:
-            self.show_snackbar(f"Error: {str(e)}", ft.colors.RED)
+            self.show_snackbar(f"Error: {str(e)}", ft.Colors.RED)
     
     def on_download_all_click(self, e):
         """Add all search results to queue"""
@@ -754,7 +754,7 @@ class YouTubeMusicDownloader:
             self.on_add_to_queue(video, settings.default_quality)
             count += 1
         
-        self.show_snackbar(f"Added {count} items to queue", ft.colors.GREEN)
+        self.show_snackbar(f"Added {count} items to queue", ft.Colors.GREEN)
     
     # Queue handlers
     def on_queue_update(self):
@@ -772,8 +772,8 @@ class YouTubeMusicDownloader:
                 ft.Container(
                     content=ft.Column(
                         [
-                            ft.Icon(ft.icons.QUEUE_MUSIC, size=64, color=ft.colors.GREY_700),
-                            ft.Text("Queue is empty", color=ft.colors.GREY_500)
+                            ft.Icon(ft.icons.QUEUE_MUSIC, size=64, color=ft.Colors.GREY_700),
+                            ft.Text("Queue is empty", color=ft.Colors.GREY_500)
                         ],
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER
                     ),
@@ -796,12 +796,12 @@ class YouTubeMusicDownloader:
     def on_cancel_download(self, item_id: str):
         """Cancel a download"""
         queue_manager.cancel_download(item_id)
-        self.show_snackbar("Download cancelled", ft.colors.ORANGE)
+        self.show_snackbar("Download cancelled", ft.Colors.ORANGE)
     
     def on_retry_download(self, item_id: str):
         """Retry a failed download"""
         queue_manager.retry_item(item_id)
-        self.show_snackbar("Retrying download...", ft.colors.BLUE)
+        self.show_snackbar("Retrying download...", ft.Colors.BLUE)
     
     def on_remove_from_queue(self, item_id: str):
         """Remove item from queue"""
@@ -816,20 +816,20 @@ class YouTubeMusicDownloader:
     def on_retry_all_click(self, e):
         """Retry all failed downloads"""
         count = queue_manager.retry_all_failed()
-        self.show_snackbar(f"Retrying {count} downloads", ft.colors.BLUE)
+        self.show_snackbar(f"Retrying {count} downloads", ft.Colors.BLUE)
     
     def on_cancel_all_click(self, e):
         """Cancel all downloads"""
         queue_manager.cancel_all()
-        self.show_snackbar("All downloads cancelled", ft.colors.ORANGE)
+        self.show_snackbar("All downloads cancelled", ft.Colors.ORANGE)
     
     def on_export_queue_click(self, e):
         """Export queue to file"""
         def on_export(filename):
             if queue_manager.export_queue(filename):
-                self.show_snackbar(f"Queue exported to {filename}", ft.colors.GREEN)
+                self.show_snackbar(f"Queue exported to {filename}", ft.Colors.GREEN)
             else:
-                self.show_snackbar("Failed to export queue", ft.colors.RED)
+                self.show_snackbar("Failed to export queue", ft.Colors.RED)
             self.page.close(dialog)
         
         def on_cancel():
@@ -843,16 +843,16 @@ class YouTubeMusicDownloader:
         files = settings.list_exported_queues()
         
         if not files:
-            self.show_snackbar("No saved queues found", ft.colors.ORANGE)
+            self.show_snackbar("No saved queues found", ft.Colors.ORANGE)
             return
         
         def on_import(filename):
             count = queue_manager.import_queue(filename)
             if count > 0:
-                self.show_snackbar(f"Imported {count} items", ft.colors.GREEN)
+                self.show_snackbar(f"Imported {count} items", ft.Colors.GREEN)
                 self.refresh_queue()
             else:
-                self.show_snackbar("Failed to import queue", ft.colors.RED)
+                self.show_snackbar("Failed to import queue", ft.Colors.RED)
             self.page.close(dialog)
         
         def on_cancel():
@@ -873,8 +873,8 @@ class YouTubeMusicDownloader:
                 ft.Container(
                     content=ft.Column(
                         [
-                            ft.Icon(ft.icons.HISTORY, size=64, color=ft.colors.GREY_700),
-                            ft.Text("No download history", color=ft.colors.GREY_500)
+                            ft.Icon(ft.icons.HISTORY, size=64, color=ft.Colors.GREY_700),
+                            ft.Text("No download history", color=ft.Colors.GREY_500)
                         ],
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER
                     ),
@@ -899,9 +899,9 @@ class YouTubeMusicDownloader:
         if file_path and Path(file_path).exists():
             self.audio_player.src = file_path
             self.audio_player.play()
-            self.show_snackbar(f"Playing: {item.get('title', '')}", ft.colors.GREEN)
+            self.show_snackbar(f"Playing: {item.get('title', '')}", ft.Colors.GREEN)
         else:
-            self.show_snackbar("File not found", ft.colors.RED)
+            self.show_snackbar("File not found", ft.Colors.RED)
     
     def on_delete_history_item(self, item: dict):
         """Delete history item"""
@@ -914,7 +914,7 @@ class YouTubeMusicDownloader:
         """Clear all history"""
         settings.clear_history()
         self.refresh_history()
-        self.show_snackbar("History cleared", ft.colors.GREEN)
+        self.show_snackbar("History cleared", ft.Colors.GREEN)
     
     # Settings handlers
     def on_settings_click(self, e):
@@ -923,7 +923,7 @@ class YouTubeMusicDownloader:
             settings.update(new_settings)
             self.apply_theme()
             self.page.close(dialog)
-            self.show_snackbar("Settings saved", ft.colors.GREEN)
+            self.show_snackbar("Settings saved", ft.Colors.GREEN)
         
         def on_close():
             self.page.close(dialog)
@@ -934,7 +934,7 @@ class YouTubeMusicDownloader:
     def on_change_download_path(self, e):
         """Change download path"""
         # Would need platform-specific file picker
-        self.show_snackbar("Feature not available on this platform", ft.colors.ORANGE)
+        self.show_snackbar("Feature not available on this platform", ft.Colors.ORANGE)
     
     def on_default_quality_change(self, e):
         """Change default quality"""
@@ -961,7 +961,7 @@ class YouTubeMusicDownloader:
         """Reset settings to defaults"""
         settings.reset_to_defaults()
         self.apply_theme()
-        self.show_snackbar("Settings reset to defaults", ft.colors.GREEN)
+        self.show_snackbar("Settings reset to defaults", ft.Colors.GREEN)
     
     def apply_theme(self):
         """Apply current theme"""
@@ -972,14 +972,14 @@ class YouTubeMusicDownloader:
     
     async def on_update_ytdlp_click(self, e):
         """Update yt-dlp"""
-        self.show_snackbar("Updating yt-dlp...", ft.colors.BLUE)
+        self.show_snackbar("Updating yt-dlp...", ft.Colors.BLUE)
         
         success, message = update_ytdlp()
         
         if success:
-            self.show_snackbar(message, ft.colors.GREEN)
+            self.show_snackbar(message, ft.Colors.GREEN)
         else:
-            self.show_snackbar(message, ft.colors.RED)
+            self.show_snackbar(message, ft.Colors.RED)
     
     def on_sort_change(self, e):
         """Handle sort change"""
@@ -993,7 +993,7 @@ class YouTubeMusicDownloader:
         """Handle type filter change"""
         settings.set('search_type_filter', e.control.value)
     
-    def show_snackbar(self, message: str, color: str = ft.colors.GREEN):
+    def show_snackbar(self, message: str, color: str = ft.Colors.GREEN):
         """Show snackbar message"""
         self.page.show_snack_bar(
             ft.SnackBar(
